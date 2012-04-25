@@ -30,7 +30,7 @@ else
   redis = Redis.new(:host => options[:host])
   Resque.redis = redis
   values = options[:queues].split(",").inject({}) do |memo, queue|
-    memo[queue] = Resque.size(queue)
+    memo[queue] = queue == 'failed' ? Resque::Failure.count : Resque.size(queue)
     memo
   end
 
